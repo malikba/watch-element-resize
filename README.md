@@ -1,5 +1,5 @@
 # watch-element-resize.js
-A (yet another) cross-browser, event-based, element resize watcher. This is kind a (improved) fork of [sdecima/javascript-detect-element-resize](https://github.com/sdecima/javascript-detect-element-resize).
+A (yet another) cross-browser, event-based, element resize watcher. This is kind of a (improved) fork of [sdecima/javascript-detect-element-resize](https://github.com/sdecima/javascript-detect-element-resize).
 
 ### Demo
 See [here a demo](http://rawgit.com/jonataswalker/watch-element-resize.js/master/examples/example.html).
