@@ -1,0 +1,28 @@
+{
+  "name": "watch-element-resize.js",
+  "version": "1.0.0",
+  "description": "A Cross-Browser, Event-based, Element Resize Detection.",
+  "main": "build/watch-element-resize.min.js",
+  "browser": "build/watch-element-resize.min.js",
+  "author": "Jonatas Walker",
+  "homepage": "https://github.com/jonataswalker/watch-element-resize.js",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jonataswalker/watch-element-resize.js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jonataswalker/watch-element-resize.js/issues"
+  },
+  "keywords": [
+    "resize",
+    "events"
+  ],
+  "devDependencies": {
+    "jshint": "latest",
+    "js-beautify": "latest",
+    "uglify-js": "latest",
+    "nodemon": "latest",
+    "parallelshell": "latest"
+  }
+}
