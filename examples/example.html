@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-br">
   <head>
-    <title>on-element-resize.js &mdash; Example</title>
+    <title>watch-element-resize.js &mdash; Example</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
     <link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.2.0/styles/default.min.css">
@@ -61,8 +61,8 @@
   </head>
   <body>
     <h1>
-      <a href="https://github.com/jonataswalker/timepicker.js" class="link">
-        on-element-resize.js
+      <a href="https://github.com/jonataswalker/watch-element-resize.js" class="link">
+        watch-element-resize.js
       </a> &mdash; Example
     </h1>
     <div id="id" class="resize">
@@ -75,7 +75,8 @@
     </div>
     <div style="margin-top: 10px">
       <pre><code class="javascript">
-        var watchResize = new ElementResize(['id', 'id2']);
+        var watchResize = new WatchElementResize(['id', 'id2']);
+
         watchResize.on('resize', function(evt) {
           // the DOM element
           var resized_element = evt.element.target;
@@ -88,7 +89,7 @@
         });
       </code></pre>
     </div>
-    <script src="../build/on-element-resize.js"></script>
+    <script src="../build/watch-element-resize.min.js"></script>
     <script src="example.js"></script>
 </body>
 </html>
