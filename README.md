@@ -43,6 +43,7 @@ watchResize.on('resize', function(evt){
 
 ## Methods
 
+#### watchResize.reAddListener()
 #### watchResize.removeListener()
 
 ## Events
