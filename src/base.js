@@ -1,29 +1,35 @@
-// internal
-var _WatchElementResize;
+import { Internal } from './internal';
+import { Emitter } from './emitter';
+import utils from './utils';
 
 /**
- * @constructor
- * @param {String|Array<String>|Element|Array<Element>} target String or 
- * array of string, DOM node or array of nodes.
- * @param {Object|undefined} opt_options Options.
+ * Principal class. Will be passed as argument to others.
+ * @class Base
  */
-var WatchElementResize = function(target, opt_options) {
-  utils.assert(Array.isArray(target) || utils.typeOf(target) == 'string' || 
-    utils.isElement(target), '@param `target` should be Element, String or Array.');
+export default class Base extends Emitter {
+  /**
+   * @constructor
+   * @param {String|Array<String>|Element|Array<Element>} target String or 
+   * array of string, DOM node or array of nodes.
+   * @param {Object|undefined} opt_options Options.
+   */
+  constructor(target, opt_options = {}) {
+    utils.assert(Array.isArray(target) ||
+                  utils.typeOf(target) == 'string' || 
+                  utils.isElement(target), 
+      '@param `target` should be Element, String or Array.');
   
-  this.target = target;
-  _WatchElementResize = new WatchElementResize.Internal(this);
-  _WatchElementResize.init();
+    super();
 
-};
-
-WatchElementResize.prototype = {
-  removeListener: function(){
-    _WatchElementResize.removeListener();
+    this.target = target;
+    Base.Internal = new Internal(this);
   }
-
-};
-
-WatchElementResize.EventType = {
-  resize: 'resize'
-};
+  
+  reAddListener() {
+    Base.Internal.setListener(this.target);
+  }
+  
+  removeListener() {
+    Base.Internal.removeListener();
+  }
+}
