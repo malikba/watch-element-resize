@@ -46,6 +46,7 @@ export HEADER
 # targets
 .PHONY: ci
 ci: build test
+
 .PHONY: build-watch
 build-watch: build watch
 
