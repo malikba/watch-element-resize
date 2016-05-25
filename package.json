@@ -24,6 +24,7 @@
     "events"
   ],
   "devDependencies": {
+    "casperjs": "^1.1.1",
     "eslint": "^2.10.2",
     "nodemon": "^1.9.2",
     "rollup": "^0.26.3",
@@ -44,7 +45,7 @@
       "no-alert": 2,
       "no-caller": 2,
       "no-eval": 2,
-      "no-proto": 2,
+      "no-proto": 1,
       "no-redeclare": 2,
       "valid-typeof": 2,
       "no-unreachable": 2,
@@ -56,7 +57,6 @@
       "no-undef": 2,
       "no-use-before-define": 2,
       "no-unused-vars": 1,
-      "no-proto": 1,
       "strict": [
         1,
         "global"
