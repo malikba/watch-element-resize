@@ -15,6 +15,8 @@ JS_DEBUG	:= $(ROOT_DIR)/$(call GetFromPkg,rollup.dest)
 JS_FINAL	:= $(ROOT_DIR)/$(call GetFromPkg,main)
 
 TMPFILE 	:= $(BUILD_DIR)/tmp
+TEST_DIR 	:= $(ROOT_DIR)/test/spec/
+TEST_INC_FILE 	:= $(ROOT_DIR)/test/include.js
 
 NODE_MODULES	:= ./node_modules/.bin
 
@@ -26,6 +28,9 @@ NODEMON 	:= $(NODE_MODULES)/nodemon
 
 ROLLUP	 	:= $(NODE_MODULES)/rollup
 ROLLUPFLAGS 	:= -c config/rollup.config.js
+
+CASPERJS 	:= $(NODE_MODULES)/casperjs
+CASPERJSFLAGS 	:= test $(TEST_DIR) --includes=$(TEST_INC_FILE) --ssl-protocol=any --ignore-ssl-errors=true
 
 define HEADER
 /**
@@ -39,6 +44,8 @@ endef
 export HEADER
 
 # targets
+.PHONY: ci
+ci: build test
 
 .PHONY: build-watch
 build-watch: build watch
@@ -52,6 +59,10 @@ build: build-js
 .PHONY: build-js
 build-js: bundle-js lint uglifyjs add-js-header
 	@echo `date +'%H:%M:%S'` "Build JS ... OK"
+
+.PHONY: test
+test:
+	@$(CASPERJS) $(CASPERJSFLAGS)
 
 .PHONY: bundle-js
 bundle-js:
