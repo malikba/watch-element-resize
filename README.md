@@ -1,4 +1,7 @@
 # watch-element-resize.js
+
+[![Build Status](https://travis-ci.org/jonataswalker/watch-element-resize.js.svg?branch=master)](https://travis-ci.org/jonataswalker/watch-element-resize.js)
+
 A (yet another) cross-browser, event-based, element resize watcher. This is kind of a (improved) fork of [sdecima/javascript-detect-element-resize](https://github.com/sdecima/javascript-detect-element-resize).
 
 ### Demo
