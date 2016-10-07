@@ -44,8 +44,46 @@ endef
 export HEADER
 
 # targets
+.PHONY: default
+default: help
+
+.PHONY: help
+help:
+	@echo
+	@echo "The most common targets are:"
+	@echo
+	@echo "- install                 Install node dependencies"
+	@echo "- build                   Build JavaScript and CSS files"
+	@echo "- build-watch             Build files and watch for modifications"
+	@echo "- test                    Run unit tests in the console"
+	@echo "- help                    Display this help message"
+	@echo
+	@echo "Other less frequently used targets are:"
+	@echo
+	@echo "- lint                    Check the code with the linter"
+	@echo "- build-js                Build JavaScript files"
+	@echo "- ci                      Run the full continuous integration process"
+	@echo
+
 .PHONY: ci
-ci: build test
+ci: test
+
+.PHONY: npm-install
+npm-install: install
+
+$(BUILD_DIR)/timestamps/node-modules-timestamp: package.json
+	@mkdir -p $(@D)
+	npm install
+	@touch $@
+
+.PHONY: install
+install: $(BUILD_DIR)/timestamps/node-modules-timestamp
+
+.PHONY: clean
+clean:
+	@rm -f $(BUILD_DIR)/timestamps/eslint-timestamp
+	@rm -f $(JS_FINAL)
+	@rm -f $(JS_DEBUG)
 
 .PHONY: build-watch
 build-watch: build watch
@@ -54,23 +92,30 @@ build-watch: build watch
 watch: watch-js
 
 .PHONY: build
-build: build-js
+build: install clean build-js
 
 .PHONY: build-js
 build-js: bundle-js lint uglifyjs add-js-header
 	@echo `date +'%H:%M:%S'` "Build JS ... OK"
 
 .PHONY: test
-test:
+test: build
 	@$(CASPERJS) $(CASPERJSFLAGS)
 
 .PHONY: bundle-js
 bundle-js:
 	@$(ROLLUP) $(ROLLUPFLAGS)
 
-.PHONY: lint
-lint: $(JS_DEBUG)
+$(BUILD_DIR)/timestamps/eslint-timestamp: $(SRC_DIR) \
+					  $(ROOT_DIR)/test/ \
+					  $(ROOT_DIR)/examples/
+	@mkdir -p $(@D)
+	@echo "Running eslint ..."
 	@$(ESLINT) $^
+	@touch $@
+
+.PHONY: lint
+lint: $(BUILD_DIR)/timestamps/eslint-timestamp
 
 .PHONY: uglifyjs
 uglifyjs: $(JS_DEBUG)
@@ -91,4 +136,4 @@ add-js-header: add-js-header-debug add-js-header-min
 watch-js: $(SRC_DIR)
 	@$(NODEMON) --on-change-only --watch $^ --ext js --exec "make build-js"
 
-.DEFAULT_GOAL := build
+.DEFAULT_GOAL := default

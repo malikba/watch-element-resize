@@ -1,4 +1,4 @@
-var require = patchRequire(require),
+var require = patchRequire(require), // eslint-disable-line no-use-before-define
     port = 8888;
 
 exports.port = port;

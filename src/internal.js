@@ -14,22 +14,22 @@ export class Internal {
       style: undefined,
       startevent: 'animationstart'
     };
-    
+
     // handle re-adding listener
     this.listening = false;
-    
+
     // increment internal ids
     this._ids = 0;
-    
+
     // these are the targets we're working on
     this.targets = [];
-    
+
     // keep `this` scope
     this.handleScrollListener = this.scrollListener.bind(this);
-    
+
     this.init();
   }
-  
+
   init() {
     this.detectAnimation();
     this.setListener(this.Base.target);
@@ -37,17 +37,17 @@ export class Internal {
 
   setListener(target) {
     let ar_target = [], element;
-    
+
     if (this.listening) return;
-    
+
     // to array if string
     target = Array.isArray(target) ? target : [target];
     // merge
     Array.prototype.push.apply(ar_target, target);
-    
+
     ar_target.forEach((el, i) => {
       element = utils.evaluate(el);
-      
+
       if (!element) return;
 
       let id = this._ids++;
@@ -58,7 +58,7 @@ export class Internal {
 
       this.addResizeListener(element);
     });
-    
+
     this.listening = true;
   }
 
@@ -73,13 +73,13 @@ export class Internal {
   detectAnimation() {
     /* Detect CSS Animations support to detect element display/re-attach */
     let animation = false,
-        animationstring = 'animation',
+        animationstring = 'animation', //eslint-disable-line no-unused-vars
         keyframeprefix = '',
         domPrefixes = ['Webkit', 'Moz', 'O', 'ms'],
         startEvents = [
           'webkitAnimationStart',
           'animationstart',
-          'oAnimationStart', 
+          'oAnimationStart',
           'MSAnimationStart'
         ],
         pfx  = '',
@@ -87,7 +87,7 @@ export class Internal {
         i = 0;
 
     animation = elm.style.animationName !== undefined;
-    
+
     if (animation === false) {
       for (; i < domPrefixes.length; i++) {
         if (elm.style[ domPrefixes[i] + 'AnimationName' ] !== undefined) {
@@ -100,7 +100,7 @@ export class Internal {
         }
       }
     }
-    
+
     const animationKeyframes = [
       '@',
       keyframeprefix,
@@ -108,7 +108,7 @@ export class Internal {
       this.animation.name,
       ' { from { opacity: 0; } to { opacity: 0; }}'
     ].join('');
-    
+
     this.animation = {
       keyframes: animationKeyframes,
       style: keyframeprefix + 'animation: 1ms ' + this.animation.name + ';'
@@ -131,12 +131,12 @@ export class Internal {
 
     this_.resetTriggers(element);
     if (element.__resizeRAF__) utils.cancelFrame(element.__resizeRAF__);
-    
-    element.__resizeRAF__ = utils.requestFrame(function(){
+
+    element.__resizeRAF__ = utils.requestFrame(function () {
       if (this_.checkTriggers(element)) {
         element.__resizeLast__.width = element.offsetWidth;
         element.__resizeLast__.height = element.offsetHeight;
-        element.__resizeListeners__.forEach(function(){
+        element.__resizeListeners__.forEach(function () {
           this_.trigger(element);
         });
       }
@@ -145,32 +145,33 @@ export class Internal {
 
   addResizeListener(element) {
     var this_ = this;
-    
+
     if (!element.__resizeTriggers__) {
       if (window.getComputedStyle(element).position === 'static') {
         element.style.position = 'relative';
       }
-      
+
       this.createStyles();
-      
+
       element.__resizeLast__ = {};
       element.__resizeListeners__ = [];
-      (element.__resizeTriggers__ = document.createElement('div')).className = 
+      (element.__resizeTriggers__ = document.createElement('div')).className =
         'resize-triggers';
-      element.__resizeTriggers__.innerHTML = 
+      element.__resizeTriggers__.innerHTML =
         '<div class="expand-trigger"><div></div></div>' +
         '<div class="contract-trigger"></div>';
       element.appendChild(element.__resizeTriggers__);
-      
+
       this.resetTriggers(element);
       element.addEventListener('scroll', this.handleScrollListener, true);
-      
+
       /* Listen for a css animation to detect element display/re-attach */
       if (this.animation.startevent) {
-        element.__resizeTriggers__.addEventListener(this.animation.startevent,  
-          function(e) {
-            if(e.animationName == this.animation.name)
+        element.__resizeTriggers__.addEventListener(this.animation.startevent,
+          function (e) {
+            if (e.animationName === this.animation.name) {
               this_.resetTriggers(element);
+            }
           });
       }
     }
@@ -183,36 +184,42 @@ export class Internal {
       element.__resizeListeners__.indexOf(element._id), 1);
     if (!element.__resizeListeners__.length) {
       element.removeEventListener('scroll', this.handleScrollListener);
-      element.__resizeTriggers__ = !element.removeChild(element.__resizeTriggers__);
+      element.__resizeTriggers__ =
+        !element.removeChild(element.__resizeTriggers__);
     }
   }
 
   createStyles() {
-    if (this.stylesCreated) return;
-    
+
     var anim = this.animation;
-    
+
     //opacity:0 works around a chrome bug
     // https://code.google.com/p/chromium/issues/detail?id=286360
-    
+
     var css = [
       anim.keyframes ? anim.keyframes : '',
       '.resize-triggers {',
       anim.style ? anim.style : '',
       'visibility:hidden;opacity:0;} ',
-      '.resize-triggers, .resize-triggers > div, .contract-trigger:before { content: \" \";display:block;position:absolute;top:0;left:0;height:100%;width:100%;overflow:hidden;} .resize-triggers>div{background:#eee;overflow:auto;} .contract-trigger:before{width:200%;height:200%;}'
+      '.resize-triggers, .resize-triggers > div,',
+      '.contract-trigger:before { content: " ";display:block;',
+      'position:absolute;top:0;left:0;height:100%;width:100%;overflow:hidden;}',
+      '.resize-triggers>div{background:#eee;overflow:auto;}',
+      '.contract-trigger:before{width:200%;height:200%;}'
     ].join('');
-    
+
     var head = document.head || document.getElementsByTagName('head')[0];
     var style = document.createElement('style');
     style.type = 'text/css';
-    
+
+    if (this.stylesCreated) return;
+
     if (style.styleSheet) {
       style.styleSheet.cssText = css;
     } else {
       style.appendChild(document.createTextNode(css));
     }
-    
+
     head.appendChild(style);
     this.stylesCreated = true;
   }
@@ -232,7 +239,7 @@ export class Internal {
   }
 
   checkTriggers(element) {
-    return element.offsetWidth != element.__resizeLast__.width ||
-              element.offsetHeight != element.__resizeLast__.height;
+    return element.offsetWidth !== element.__resizeLast__.width ||
+              element.offsetHeight !== element.__resizeLast__.height;
   }
 }

@@ -1,18 +1,20 @@
+/* global config, WatchElementResize */
+
 var size = {
   w: 140,
   h: 140
 };
 
-casper.test.setUp(function() {
+casper.test.setUp(function () {
   casper.start(config.url);
 });
 
-casper.test.tearDown(function(done) {
+casper.test.tearDown(function (done) {
   casper.run(done);
 });
 
-casper.test.begin('watch element resize', 1, function(test) {
-  casper.thenEvaluate(function(size) {
+casper.test.begin('watch element resize', 1, function (test) {
+  casper.thenEvaluate(function (size_) {
     var div = document.querySelector('#resize'),
         watchResize = new WatchElementResize(div);
 
@@ -21,25 +23,24 @@ casper.test.begin('watch element resize', 1, function(test) {
       height: 0
     };
 
-    watchResize.on('resize', function(evt) {
+    watchResize.on('resize', function (evt) {
       window.offset = evt.element.offset;
-      window.triggered = true; 
+      window.triggered = true;
     });
-    
-    div.style.width = size.w + 'px';
-    div.style.height = size.h + 'px';
+
+    div.style.width = size_.w + 'px';
+    div.style.height = size_.h + 'px';
   }, size);
-  
-  casper.waitFor(function() {
-    return this.evaluate(function(size) {
-      return window.offset.width === size.w && window.offset.height === size.h;
+
+  casper.waitFor(function () {
+    return this.evaluate(function (s) {
+      return window.offset.width === s.w && window.offset.height === s.h;
     }, size);
-  }, function() {
-    console.info('offset ... ', casper.getGlobal('offset').width);
+  }, function () {
     test.pass('Element is now ' + size.w + 'px X ' + size.h + 'px');
-  }, function() {
+  }, function () {
     test.fail('Couldn\'t listen for new element size!');
   });
-  
+
   test.done();
 });

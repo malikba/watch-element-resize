@@ -9,26 +9,25 @@ import utils from './utils';
 export default class Base extends Emitter {
   /**
    * @constructor
-   * @param {String|Array<String>|Element|Array<Element>} target String or 
+   * @param {String|Array<String>|Element|Array<Element>} target String or
    * array of string, DOM node or array of nodes.
    * @param {Object|undefined} opt_options Options.
    */
   constructor(target, opt_options = {}) {
-    utils.assert(Array.isArray(target) ||
-                  utils.typeOf(target) == 'string' || 
-                  utils.isElement(target), 
-      '@param `target` should be Element, String or Array.');
-  
+    utils.assert(Array.isArray(target)
+        || utils.typeOf(target) === 'string'
+        || utils.isElement(target),
+        '`target` should be Element, <Array>Element, String or <Array>String.'
+    );
     super();
-
     this.target = target;
     Base.Internal = new Internal(this);
   }
-  
+
   reAddListener() {
     Base.Internal.setListener(this.target);
   }
-  
+
   removeListener() {
     Base.Internal.removeListener();
   }
