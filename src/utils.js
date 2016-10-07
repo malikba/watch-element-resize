@@ -49,7 +49,7 @@ export default {
       return (!!obj && obj instanceof HTMLElement);
     }
     // Older browsers
-    return (!!obj && typeof obj === 'object' && 
+    return (!!obj && typeof obj === 'object' &&
                 obj.nodeType === 1 && !!obj.nodeName);
   },
   evaluate(element) {
@@ -63,14 +63,16 @@ export default {
       case 'string':
         el = this.$(element);
         break;
+      default:
+        console.warn('Unknown type');
     }
     this.assert(el, 'Can\'t evaluate: @param ' + element);
     return el;
   },
   toType(obj) {
-    if (obj == window && obj.document && obj.location) {
+    if (obj === window && obj.document && obj.location) {
       return 'window';
-    } else if (obj == document) {
+    } else if (obj === document) {
       return 'htmldocument';
     } else if (typeof obj === 'string') {
       return 'string';
@@ -79,8 +81,7 @@ export default {
     }
   },
   typeOf(obj) {
-    return ({}).toString.call(obj)
-      .match(/\s([a-zA-Z]+)/)[1].toLowerCase();
+    return ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
   },
   assert(condition, message) {
     if (!condition) {
@@ -91,18 +92,18 @@ export default {
       throw message; // Fallback
     }
   },
-  requestFrame: (function(){
-    let raf = window.requestAnimationFrame || 
-              window.mozRequestAnimationFrame || 
-              window.webkitRequestAnimationFrame ||
-              function(fn) { return window.setTimeout(fn, 20); };
-    return function(fn) { return raf(fn); };
+  requestFrame: (function () {
+    let raf = window.requestAnimationFrame
+        || window.mozRequestAnimationFrame
+        || window.webkitRequestAnimationFrame
+        || function (fn) { return window.setTimeout(fn, 20); };
+    return function (fn) { return raf(fn); };
   })(),
-  cancelFrame: (function(){
-    let cancel =  window.cancelAnimationFrame || 
-                  window.mozCancelAnimationFrame || 
-                  window.webkitCancelAnimationFrame ||
-                  window.clearTimeout;
-    return function(id) { return cancel(id); };
+  cancelFrame: (function () {
+    let cancel =  window.cancelAnimationFrame
+        || window.mozCancelAnimationFrame
+        || window.webkitCancelAnimationFrame
+        || window.clearTimeout;
+    return function (id) { return cancel(id); };
   })()
-}
+};
