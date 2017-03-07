@@ -1,7 +1,7 @@
 {
-  "name": "watch-element-resize.js",
-  "version": "2.0.1",
-  "description": "A (yet another) cross-browser, event-based, element resize watcher. PS: This is a fork of Jonatas Walker repository.",
+  "name": "watch-element-resize",
+  "version": "2.0.2",
+  "description": "A (yet another) cross-browser, event-based, element resize watcher.",
   "main": "build/watch-element-resize.min.js",
   "browser": "build/watch-element-resize.min.js",
   "author": "Malik Baba Aïssa",
@@ -9,7 +9,7 @@
   "license": "MIT",
   "rollup": {
     "entry": "src/base.js",
-    "dest": "build/watch-element-resize.js",
+    "dest": "build/watch-element-resize",
     "moduleName": "WatchElementResize"
   },
   "repository": {
@@ -17,7 +17,7 @@
     "url": "git://github.com/malikba/watch-element-resize.git"
   },
   "bugs": {
-    "url": "https://github.com/malikba/watch-element-resize.js/issues"
+    "url": "https://github.com/malikba/watch-element-resize/issues"
   },
   "keywords": [
     "resize",
